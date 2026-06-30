@@ -2,16 +2,28 @@ const User = require("../models/User");
 
 const createUser = async (req, res) => {
   try {
-    const { name, email, password, role, image } = req.body;
+    const { name, email, password, role } = req.body;
 
-    const newUser = new User({ name, email, password, role, image });
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ message: "La imagen de perfil es obligatoria" });
+    }
+
+    const newUser = new User({
+      name,
+      email,
+      password,
+      role,
+      image: req.file.path,
+    });
+
     await newUser.save();
 
     res
       .status(201)
       .json({ message: "Usuario creado exitosamente", user: newUser });
   } catch (error) {
-    console.log("❌ ERROR DETECTADO EN EL CONTROLADOR:", error);
     res
       .status(500)
       .json({ message: "Error al crear el usuario", error: error.message });
