@@ -31,3 +31,7 @@ const courseSchema = new mongoose.Schema({
     required: [true, "Las tecnologías del curso son obligatorias"],
   },
 });
+
+const Course = mongoose.model("Course", courseSchema);
+
+module.exports = Course;
