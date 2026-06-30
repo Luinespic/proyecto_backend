@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Course = require("../models/Course");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const initialCourses = [
   {
@@ -36,9 +38,7 @@ const initialCourses = [
 
 const runSeed = async () => {
   try {
-    await mongoose.connect(
-      "mongodb+srv://lucia:lucia123456@cluster0.eafpqv3.mongodb.net/plataforma-cursos?appName=Cluster0",
-    );
+    await mongoose.connect(process.env.DB_URI);
     console.log("Conectado a MongoDB para ejecutar la seed...");
 
     await Course.collection.drop();
