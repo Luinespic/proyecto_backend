@@ -10,12 +10,14 @@ const createUser = async (req, res) => {
         .json({ message: "La imagen de perfil es obligatoria" });
     }
 
+    const imageUrl = req.file.path || req.file.secure_url || req.file.url;
+
     const newUser = new User({
       name,
       email,
       password,
       role,
-      image: req.file.path,
+      image: imageUrl,
     });
 
     await newUser.save();

@@ -1,10 +1,11 @@
 const express = require("express");
 const dotenv = require("dotenv");
+
+dotenv.config();
+
 const { connectDB } = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const courseRoutes = require("./routes/courseRoutes");
-
-dotenv.config();
 
 connectDB();
 
