@@ -27,6 +27,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "La imagen de perfil es obligatoria"],
     },
+    imgID: {
+      type: String,
+    },
     coursesEnrolled: [
       {
         type: mongoose.Schema.Types.ObjectId,

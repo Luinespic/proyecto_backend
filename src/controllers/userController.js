@@ -11,6 +11,7 @@ const createUser = async (req, res) => {
     }
 
     const imageUrl = req.file.path || req.file.secure_url || req.file.url;
+    const imageId = req.file.filename || req.file.public_id;
 
     const newUser = new User({
       name,
@@ -18,6 +19,7 @@ const createUser = async (req, res) => {
       password,
       role,
       image: imageUrl,
+      imgID: imageId,
     });
 
     await newUser.save();
