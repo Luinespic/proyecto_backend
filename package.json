@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "courseSeed": "node src/seeds/courseSeed.js"
   },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Luinespic/proyecto_backend.git"
