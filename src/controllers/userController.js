@@ -11,7 +11,10 @@ const createUser = async (req, res) => {
       .status(201)
       .json({ message: "Usuario creado exitosamente", user: newUser });
   } catch (error) {
-    res.status(500).json({ message: "Error al crear el usuario", error });
+    console.log("❌ ERROR DETECTADO EN EL CONTROLADOR:", error);
+    res
+      .status(500)
+      .json({ message: "Error al crear el usuario", error: error.message });
   }
 };
 
