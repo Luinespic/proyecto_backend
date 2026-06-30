@@ -2,15 +2,23 @@ const Course = require("../models/Course");
 
 const createCourse = async (req, res) => {
   try {
-    const { title, description, image, price, level, technologies } = req.body;
+    const { title, description, price, level, technologies } = req.body;
+
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ message: "La imagen del curso es obligatoria" });
+    }
+
+    const imageUrl = req.file.path || req.file.secure_url || req.file.url;
 
     const newCourse = new Course({
       title,
       description,
-      image,
       price,
       level,
       technologies,
+      image: imageUrl,
     });
 
     await newCourse.save();
