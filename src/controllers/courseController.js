@@ -1,4 +1,5 @@
 const Course = require("../models/Course");
+const { deleteImgCloudinary } = require("../utils/cloudinaryUtil");
 
 const createCourse = async (req, res) => {
   try {
@@ -10,7 +11,8 @@ const createCourse = async (req, res) => {
         .json({ message: "La imagen del curso es obligatoria" });
     }
 
-    const imageUrl = req.file.path || req.file.secure_url || req.file.url;
+    const imageUrl = req.file.path;
+    const imageId = req.file.filename;
 
     const newCourse = new Course({
       title,
@@ -19,6 +21,7 @@ const createCourse = async (req, res) => {
       level,
       technologies,
       image: imageUrl,
+      imgId: imageId,
     });
 
     await newCourse.save();
@@ -27,6 +30,7 @@ const createCourse = async (req, res) => {
       .status(201)
       .json({ message: "Curso creado exitosamente", course: newCourse });
   } catch (error) {
+    if (req.file?.filename) await deleteImgCloudinary(req.file.filename);
     res
       .status(500)
       .json({ message: "Error al crear el curso", error: error.message });

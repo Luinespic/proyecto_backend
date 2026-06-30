@@ -16,6 +16,9 @@ const courseSchema = new mongoose.Schema({
     type: String,
     required: [true, "La imagen del curso es obligatoria"],
   },
+  imgId: {
+    type: String,
+  },
   price: {
     type: Number,
     required: [true, "El precio del curso es obligatorio"],
