@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const { verifySign } = require("../utils/jwt");
+const { verifyToken } = require("../utils/jwtUtil");
 
 const isAuth = async (req, res, next) => {
   try {
@@ -8,7 +8,7 @@ const isAuth = async (req, res, next) => {
       return res.status(401).json({ message: "No has iniciado sesión" });
     }
 
-    const verified = verifySign(token);
+    const verified = verifyToken(token);
     if (!verified) {
       return res.status(401).json({ message: "No autorizado" });
     }
@@ -31,11 +31,9 @@ const isAdmin = (req, res, next) => {
   if (req.user && req.user.role === "admin") {
     next();
   } else {
-    return res
-      .status(403)
-      .json({
-        message: "Acceso denegado: Se requieren permisos de Administrador",
-      });
+    return res.status(403).json({
+      message: "Acceso denegado: Se requieren permisos de Administrador",
+    });
   }
 };
 
