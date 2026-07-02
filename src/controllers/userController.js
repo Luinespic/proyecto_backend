@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const bcrypt = require("bcrypt");
+const { generateToken } = require("../utils/jwtUtil");
 
 const createUser = async (req, res) => {
   try {
@@ -43,4 +45,38 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = { createUser, getAllUsers };
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const userInDB = await User.findOne({ email });
+    if (!userInDB) {
+      return res.status(404).json({
+        message: "El correo electrónico o la contraseña no son correctos",
+      });
+    }
+
+    const isValidPassword = bcrypt.compareSync(password, userInDB.password);
+    if (!isValidPassword) {
+      return res.status(400).json({
+        message: "El correo electrónico o la contraseña no son correctos",
+      });
+    }
+
+    const token = generateToken(userInDB._id);
+
+    userInDB.password = null;
+
+    return res.status(200).json({
+      message: "Login exitoso",
+      token,
+      user: userInDB,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error al iniciar sesión", error: error.message });
+  }
+};
+
+module.exports = { createUser, getAllUsers, loginUser };
